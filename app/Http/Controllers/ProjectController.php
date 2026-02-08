@@ -11,6 +11,12 @@ class ProjectController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $projects = Project::with('users')->get();
+
         return ProjectResource::collection($projects);
+    }
+
+    public function show(Project $project): ProjectResource
+    {
+        return new ProjectResource($project->load('users'));
     }
 }
