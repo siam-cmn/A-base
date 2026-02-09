@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Services\ProjectService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -22,35 +22,16 @@ class ProjectController extends Controller
         return new ProjectResource($project->load('users'));
     }
 
-    public function store(StoreProjectRequest $request): ProjectResource
+    public function store(StoreProjectRequest $request, ProjectService $service): ProjectResource
     {
-        $validated = $request->validated();
-        // ログイン機能作成したら追加
-        // $organizationId = auth()->user()->organization_id;
+        $data = array_merge($request->validated(), [
+            // ログイン機能作成したら差し替え
+            // $organizationId = auth()->user()->organization_id;
+            'organization_id' => 1, // 仮
+        ]);
 
-        return DB::transaction(function () use ($validated) {
-            $project = Project::create([
-                'organization_id' => $validated['organization_id'],
-                'name' => $validated['name'],
-                'description' => $validated['description'] ?? null,
-                'status' => $validated['status'],
-            ]);
+        $project = $service->saveProject(new Project, $data);
 
-            $usersData = [];
-            if (! empty($validated['users'])) {
-                foreach ($validated['users'] as $userData) {
-                    $usersData[$userData['id']] = [
-                        'assigned_status' => $userData['assigned_status'],
-                        'assigned_role' => $userData['assigned_role'],
-                        'allocation_percent' => $userData['allocation_percent'],
-                        'joined_at' => $userData['joined_at'],
-                    ];
-                }
-            }
-
-            $project->users()->sync($usersData);
-
-            return new ProjectResource($project->load('users'));
-        });
+        return new ProjectResource($project->load('users'));
     }
 }
