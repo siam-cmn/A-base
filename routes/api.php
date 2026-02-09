@@ -13,6 +13,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('projects')->group(function () {
     Route::get('/', [ProjectController::class, 'index']);
     Route::get('/{project}', [ProjectController::class, 'show']);
+    Route::post('/', [ProjectController::class, 'store']);
     Route::get('/{project}/matrix', [SpecMatrixController::class, 'getPermissionMatrix']);
 });
 //    ->middleware('can:view,project');

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Enums\ProjectStatus;
-use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Project extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'organization_id', 'name', 'description', 'status',
+    ];
 
     protected $casts = [
         'status' => ProjectStatus::class,
