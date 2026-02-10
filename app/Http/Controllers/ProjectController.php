@@ -44,4 +44,11 @@ class ProjectController extends Controller
 
         return new ProjectResource($project->load('users'));
     }
+
+    public function destroy(Project $project, ProjectService $service)
+    {
+        $service->deleteProject($project);
+
+        return response()->noContent();
+    }
 }

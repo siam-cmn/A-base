@@ -20,6 +20,14 @@ class ProjectService
         });
     }
 
+    public function deleteProject(Project $project)
+    {
+        return DB::transaction(function () use ($project) {
+            $project->users()->detach();
+            $project->delete();
+        });
+    }
+
     private function formatPivotData(array $users): array
     {
         return collect($users)->keyBy('id')->map(function ($user) {
