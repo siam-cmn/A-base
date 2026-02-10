@@ -49,7 +49,7 @@ class ProjectSeeder extends Seeder
             $project->users()->attach(
                 $users->random(rand(3, 8))->pluck('id')->toArray(),
                 [
-                    'status' => fake()->randomElement(UserStatus::class),
+                    'assigned_status' => fake()->randomElement(UserStatus::class),
                     'assigned_role' => fake()->randomElement(UserRole::class),
                     'joined_at' => now(),
                 ]

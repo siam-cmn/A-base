@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -44,6 +45,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_role' => UserRole::class,
         ];
     }
 
@@ -61,7 +63,8 @@ class User extends Authenticatable
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class)
-            ->withPivot(['status', 'joined_at', 'leave_at'])
+            ->withPivot(['status', 'assigned_role', 'allocation_percent', 'joined_at', 'leave_at'])
+            ->using(ProjectUser::class)
             ->withTimestamps();
     }
 }
