@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Services\ProjectService;
@@ -31,6 +32,15 @@ class ProjectController extends Controller
         ]);
 
         $project = $service->saveProject(new Project, $data);
+
+        return new ProjectResource($project->load('users'));
+    }
+
+    public function update(UpdateProjectRequest $request, Project $project, ProjectService $service): ProjectResource
+    {
+        $data = $request->validated();
+
+        $project = $service->saveProject($project, $data);
 
         return new ProjectResource($project->load('users'));
     }
