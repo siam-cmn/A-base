@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
         'avatar_url',
     ];
 
@@ -50,11 +51,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function Organizations(): BelongsToMany
+    public function Organization(): BelongsTo
     {
-        return $this->belongsToMany(Organization::class)->withPivot('role');
+        return $this->belongsTo(Organization::class);
     }
 
     /**
