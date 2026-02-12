@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,9 +21,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name', 'last_name', 'first_name_kana', 'last_name_kana',
         'email',
+        'role',
         'avatar_url',
+        'password',
+        'organization_id',
     ];
 
     /**
@@ -49,22 +52,26 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function Organizations(): BelongsToMany
+    public function Organization(): BelongsTo
     {
-        return $this->belongsToMany(Organization::class)->withPivot('role');
+        return $this->belongsTo(Organization::class);
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class)
             ->withPivot(['status', 'assigned_role', 'allocation_percent', 'joined_at', 'leave_at'])
             ->using(ProjectUser::class)
             ->withTimestamps();
+    }
+
+    public function getNameAttribute()
+    {
+        return "{$this->last_name} {$this->first_name}";
+    }
+
+    public function getNameKanaAttribute()
+    {
+        return "{$this->last_name} {$this->first_name}";
     }
 }

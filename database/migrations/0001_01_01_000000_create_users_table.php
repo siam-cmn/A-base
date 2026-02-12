@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('氏名');
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
+            $table->string('last_name')->comment('姓');
+            $table->string('first_name')->comment('名');
+            $table->string('last_name_kana')->comment('姓カナ');
+            $table->string('first_name_kana')->comment('名カナ');
             $table->string('email')->unique()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('password')->comment('パスワード');
+            $table->integer('role')->comment('組織内ロール');
             $table->text('avatar_url')->nullable()->comment('プロフィール画像URL');
             $table->date('hired_at')->nullable()->comment('入社日');
             $table->date('left_at')->nullable()->comment('退職日');
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
