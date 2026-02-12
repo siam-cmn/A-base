@@ -21,10 +21,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name', 'last_name', 'first_name_kana', 'last_name_kana',
         'email',
         'role',
         'avatar_url',
+        'password',
+        'organization_id',
     ];
 
     /**
@@ -50,22 +52,26 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function Organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class)
             ->withPivot(['status', 'assigned_role', 'allocation_percent', 'joined_at', 'leave_at'])
             ->using(ProjectUser::class)
             ->withTimestamps();
+    }
+
+    public function getNameAttribute()
+    {
+        return "{$this->last_name} {$this->first_name}";
+    }
+
+    public function getNameKanaAttribute()
+    {
+        return "{$this->last_name} {$this->first_name}";
     }
 }

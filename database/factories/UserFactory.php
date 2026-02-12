@@ -22,8 +22,8 @@ class UserFactory extends Factory
     {
         return [
             'organization_id' => Organization::factory(),
-            'last_name' => fake()->lastName,
-            'first_name' => fake()->firstName,
+            'last_name' => fake()->lastName(),
+            'first_name' => fake()->firstName(),
             'last_name_kana' => fake()->lastKanaName(),
             'first_name_kana' => fake()->firstKanaName(),
             'email' => fake()->unique()->safeEmail(),
