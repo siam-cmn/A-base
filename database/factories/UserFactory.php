@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Authority;
 use App\Enums\UserRole;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,6 +30,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
             'role' => fake()->randomElement(UserRole::class),
+            'authority' => fake()->randomElement(Authority::class),
+
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];

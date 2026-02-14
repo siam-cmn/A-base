@@ -19,6 +19,8 @@ class RegistrationTest extends TestCase
     public function test_new_users_can_register(): void
     {
         $response = $this->post('/register', [
+            'organization_name' => '株式会社テスト',
+            'organization_slug' => 'test',
             'last_name' => 'Test',
             'first_name' => 'User',
             'last_name_kana' => 'テスト',
@@ -28,11 +30,8 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        if ($response->getSession()->has('errors')) {
-            dd($response->getSession()->get('errors')->all());
-        }
-
         $this->assertAuthenticated();
+
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 }

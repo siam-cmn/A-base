@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Authority;
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'first_name', 'last_name', 'first_name_kana', 'last_name_kana',
         'email',
         'role',
+        'authority',
         'avatar_url',
         'password',
         'organization_id',
@@ -48,7 +50,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'user_role' => UserRole::class,
+            'role' => UserRole::class,
+            'authority' => Authority::class,
         ];
     }
 
