@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('email')->unique()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->comment('パスワード');
-            $table->integer('role')->comment('組織内ロール');
+            $table->integer('role')->nullable()->comment('組織内ロール');
+            $table->integer('authority')->comment('権限');
             $table->text('avatar_url')->nullable()->comment('プロフィール画像URL');
             $table->date('hired_at')->nullable()->comment('入社日');
             $table->date('left_at')->nullable()->comment('退職日');
