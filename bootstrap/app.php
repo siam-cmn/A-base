@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
+            '*', // 開発中だけ、一時的に全てのルートでCSRFを無効化
             'register',
         ]);
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
